@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Deutsch tippen lernen: 36 kostenlose Offline-Lektionen, QWERTZ-Tastatur und dein persönlicher Fortschritt.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; font-src 'self'; base-uri 'none'; form-action 'none'">
+  <title>Tippwald · Deutsch tippen lernen</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="engine.js" defer></script>
+  <script src="lessons.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Zum Inhalt</a>
+  <header class="topbar">
+    <button class="brand" id="brand" aria-label="Tippwald – zur Übersicht"><img src="icon.svg" alt="" width="25" height="25">Tippwald</button>
+    <nav aria-label="Hauptnavigation">
+      <button id="home-nav" class="nav-button active">Start</button>
+      <button id="stats-nav" class="nav-button">Statistik</button>
+      <button id="badges-nav" class="nav-button">Abzeichen</button>
+    </nav>
+    <div class="nav-right"><span>Deutsch · QWERTZ</span><span class="offline"><i></i> Offline bereit</span></div>
+  </header>
+  <main id="main">
+    <section id="map-view" aria-label="Lektionsübersicht">
+      <h1 class="sr-only">Deutsch tippen lernen</h1>
+      <div class="map-toolbar"><div class="course-status"><span><b id="overall-percent">0%</b> geschafft</span><span><b id="overall-stars">0</b> Sterne</span><span><b id="overall-points">0</b> Punkte</span></div><div class="map-tools"><button class="text-button" id="continue-button">Weiter →</button><label class="free-practice"><input type="checkbox" id="free-practice"> Freies Üben</label><button class="text-button" id="help-button">Hilfe</button></div></div>
+      <p class="sr-only" id="welcome-note">Lektionen werden nacheinander freigeschaltet. Freies Üben öffnet alle Lektionen.</p>
+      <div id="onboarding" class="onboarding"><span>Klicke auf die Lektion,<br>um zu beginnen.</span><button id="dismiss-onboarding" aria-label="Hinweis schließen">×</button></div>
+      <div id="chapters"></div>
+      <footer class="course-footer"><span id="storage-note">Dein Fortschritt bleibt in diesem Browser. Kein Konto, keine Werbung.</span><button class="text-button" id="reset-button">Fortschritt zurücksetzen</button></footer>
+    </section>
+
+    <section id="lesson-view" hidden aria-labelledby="lesson-title">
+      <div class="lesson-heading"><button class="back-button" id="back-button">← Übersicht</button><div><p id="lesson-chapter" class="eyebrow"></p><h1 id="lesson-title"></h1></div><button id="restart-button" class="quiet-button" title="Lektion neu starten">↻ Neu</button></div>
+      <div class="lesson-metrics"><div><strong id="live-wpm">0</strong><span>Wörter / Min.</span></div><div><strong id="live-accuracy">100<span>%</span></strong><span>Genauigkeit</span></div><div><strong id="live-time">0:00</strong><span>Aktive Zeit</span></div><button class="quiet-button" id="pause-button">Ⅱ Pause</button></div>
+      <progress id="lesson-progress" max="1" value="0" aria-label="Lektionsfortschritt"></progress>
+      <div class="typing-card" id="typing-card">
+        <div class="typing-topline"><span id="typing-instruction">Klicke unten in das Eingabefeld und beginne zu tippen.</span><span id="letter-count">0 / 0</span></div>
+        <p id="sr-prompt" class="sr-only"></p>
+        <div id="typing-text" class="typing-text" aria-hidden="true"></div>
+        <label class="input-label" for="typing-input">Deine Tastatur ist bereit <span aria-hidden="true">↓</span></label>
+        <textarea id="typing-input" rows="1" aria-label="Hier tippen" aria-describedby="sr-prompt lesson-hint" placeholder="Hier klicken und lostippen …" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="text"></textarea>
+        <div class="pause-overlay" id="pause-overlay" hidden><span class="pause-symbol" aria-hidden="true">Ⅱ</span><h2>Kleine Pause.</h2><p>Die Zeit steht still. Weiter, wenn du bereit bist.</p><button class="primary" id="resume-button">Weiter tippen →</button></div>
+      </div>
+      <p class="typing-feedback" id="typing-feedback" role="status" aria-live="polite">Genauigkeit zuerst. Das Tempo kommt mit der Übung.</p>
+      <div class="keyboard-wrap"><div class="keyboard-caption"><span>DEUTSCHE TASTATUR</span><span id="next-key-hint">Grundstellung: A S D F · J K L Ö</span></div><div id="keyboard" class="keyboard" aria-hidden="true"></div></div>
+      <p class="lesson-tip" id="lesson-hint"></p>
+      <div class="lesson-footnote"><span>Wörter/Min. = 5 Zeichen pro Wort · Fehler zuerst korrigieren</span><span><kbd>Esc</kbd> Pause</span></div>
+    </section>
+  </main>
+
+  <dialog id="result-dialog" aria-labelledby="result-title">
+    <div class="result-art" aria-hidden="true">✓</div><p class="eyebrow">LEKTION GESCHAFFT</p><h2 id="result-title">Gut gemacht!</h2><p id="result-message"></p><div id="result-stars" class="result-stars" aria-label="Sterne"></div>
+    <div class="result-metrics"><div><strong id="result-wpm"></strong><span>Wörter / Min.</span></div><div><strong id="result-accuracy"></strong><span>Genauigkeit</span></div><div><strong id="result-time"></strong><span>Aktive Zeit</span></div></div>
+    <p class="subtle">3 Sterne ab 98% · 2 Sterne ab 90% · 1 Stern fürs Abschließen</p>
+    <div class="dialog-actions"><button class="quiet-button" id="result-map">Übersicht</button><button class="quiet-button" id="result-retry">↻ Noch einmal</button><button class="primary" id="result-next">Weiter →</button></div>
+  </dialog>
+  <dialog id="info-dialog" aria-labelledby="info-title"><button class="dialog-close" id="info-close" aria-label="Schließen">×</button><h2 id="info-title"></h2><div id="info-content"></div></dialog>
+  <dialog id="reset-dialog" aria-labelledby="reset-title"><h2 id="reset-title">Neu anfangen?</h2><p>Deine Sterne und Bestwerte in diesem Browser werden gelöscht. Die Lektionen bleiben erhalten. Das lässt sich nicht rückgängig machen.</p><div class="dialog-actions"><button class="quiet-button" id="reset-cancel">Abbrechen</button><button class="danger-button" id="reset-confirm">Ja, Fortschritt löschen</button></div></dialog>
+  <noscript>Bitte aktiviere JavaScript für diese lokale Datei. Die App benötigt keine Internetverbindung.</noscript>
+</body>
+</html>
